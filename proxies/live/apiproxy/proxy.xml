@@ -1,0 +1,4 @@
+<APIProxy name="gcsg">
+  <!-- This is the root of the application -->
+  <Description>"gp-connect-second-generation"</Description>
+</APIProxy>

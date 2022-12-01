@@ -1,0 +1,4 @@
+variables:
+  service_name: gp-connect-second-generation
+  short_service_name: gcsg
+  service_base_path: gp-connect-second-generation
