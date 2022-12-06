@@ -1,8 +1,3 @@
-parameters:
-  - name: full
-    type: boolean
-    default: false
-
 steps:
   - bash: |
       make install-python
@@ -10,31 +5,26 @@ steps:
     displayName: Setup pytests
     condition: always()
 
-  - ${{ if parameters.full }}:
-    - bash: |
-        APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-        PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
-        SOURCE_COMMIT_ID=$(Build.SourceVersion) \
-        make test
-      workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-      displayName: Run full test suite
-    - task: PublishTestResults@2
-      displayName: 'Publish test results'
-      condition: always()
-      inputs:
-        testResultsFiles: '$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/test-report.xml'
-        failTaskOnFailedTests: true
-  - ${{ if not(parameters.full) }}:
-    - bash: |
-        APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-        PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
-        SOURCE_COMMIT_ID=$(Build.SourceVersion) \
-        make smoketest
-      workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-      displayName: Run smoketests
-    - task: PublishTestResults@2
-      displayName: 'Publish smoketest results'
-      condition: always()
-      inputs:
-        testResultsFiles: '$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/smoketest-report.xml'
-        failTaskOnFailedTests: true
+  - bash: |
+      export APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
+      export PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
+      export SOURCE_COMMIT_ID=$(Build.SourceVersion) \
+      
+      if [[ $APIGEE_ENVIRONMENT == "prod" ]]
+      then
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m smoketest -o junit_logging=all --junitxml=test-report.xml
+      elif [[ $APIGEE_ENVIRONMENT =~ .*-*sandbox ]]
+      then
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m "not nhsd_apim_authorization" -o junit_logging=all --junitxml=test-report.xml
+      else
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -o junit_logging=all --junitxml=test-report.xml
+      fi
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests
+    displayName: Run full test suite
+
+  - task: PublishTestResults@2
+    displayName: 'Publish test results'
+    condition: always()
+    inputs:
+      testResultsFiles: '$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml'
+      failTaskOnFailedTests: true
