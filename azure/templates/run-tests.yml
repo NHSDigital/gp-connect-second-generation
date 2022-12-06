@@ -6,9 +6,9 @@ steps:
     condition: always()
 
   - bash: |
-      APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-      PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
-      SOURCE_COMMIT_ID=$(Build.SourceVersion) \
+      export APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
+      export PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
+      export SOURCE_COMMIT_ID=$(Build.SourceVersion) \
       
       if [[ $APIGEE_ENVIRONMENT == "prod" ]]
       then
