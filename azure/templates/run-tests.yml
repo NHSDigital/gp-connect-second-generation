@@ -15,11 +15,11 @@ steps:
        poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m smoketest -o junit_logging=all --junitxml=test-report.xml
       elif [[ $APIGEE_ENVIRONMENT =~ .*-*sandbox ]]
       then
-       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m sandbox -o junit_logging=all --junitxml=test-report.xml
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v  -o junit_logging=all --junitxml=test-report.xml
       else
-       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m "not status" -o junit_logging=all --junitxml=test-report.xml
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -o junit_logging=all --junitxml=test-report.xml
       fi
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests
     displayName: Run full test suite
 
   - task: PublishTestResults@2
