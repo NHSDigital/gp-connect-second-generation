@@ -15,7 +15,7 @@ steps:
        poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m smoketest -o junit_logging=all --junitxml=test-report.xml
       elif [[ $APIGEE_ENVIRONMENT =~ .*-*sandbox ]]
       then
-       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v  -o junit_logging=all --junitxml=test-report.xml
+       poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -m "not nhsd_apim_authorization" -o junit_logging=all --junitxml=test-report.xml
       else
        poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$PROXY_NAME -v -o junit_logging=all --junitxml=test-report.xml
       fi
