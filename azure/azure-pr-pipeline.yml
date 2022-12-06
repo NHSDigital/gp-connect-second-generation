@@ -36,7 +36,6 @@ extends:
       - environment: internal-dev
         post_deploy:
           - template: ./templates/run-tests.yml
-            param: true
       - environment: internal-dev-sandbox
         proxy_path: sandbox
         post_deploy:

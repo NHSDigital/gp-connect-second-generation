@@ -14,4 +14,4 @@ run:
 
 #  run tests with certain marker e.g. make run-sandbox runs tests marked with sandbox
 run-%:
-	poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$(PROXY_NAME) -s -v -m "$*" $(f)
+	APIGEE_ACCESS_TOKEN=$(APIGEE_ACCESS_TOKEN) poetry run pytest --api-name=gp-connect-second-generation --proxy-name=$(PROXY_NAME) -s -v -m "$*" $(f)
