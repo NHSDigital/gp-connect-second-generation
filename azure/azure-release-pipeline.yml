@@ -59,6 +59,8 @@ extends:
         proxy_path: sandbox
         post_deploy:
           - template: ./templates/run-tests.yml
+                parameters:
+                  apigee-prod-org-tests: true
     # Enable int environment when ready by uncommenting:
       - environment: int
         depends_on:
@@ -66,5 +68,6 @@ extends:
           - internal_qa_sandbox
         post_deploy:
           - template: ./templates/run-tests.yml
-            parameters:
-              full: true
+        parameters:
+          full: true
+          apigee-prod-org-tests: true

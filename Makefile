@@ -66,3 +66,12 @@ smoketest:
 test:
 	$(TEST_CMD) \
 	--junitxml=test-report.xml \
+
+smoketest-prod:
+	$(PROD_TEST_CMD) \
+	--junitxml=smoketest-report.xml \
+	-m smoketest
+
+test-prod:
+	$(PROD_CMD) \
+	--junitxml=test-report.xml \
