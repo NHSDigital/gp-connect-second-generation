@@ -15,7 +15,7 @@ variables:
           PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
           SOURCE_COMMIT_ID=$(Build.SourceVersion) \
           APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-          APIGEE_APP_ID= 1ea08527-8b04-487a-99c2-0258d99e7c4f \
+          APIGEE_APP_ID=1ea08527-8b04-487a-99c2-0258d99e7c4f \
           STATUS_ENDPOINT_API_KEY=$(STATUS_ENDPOINT_API_KEY) \
       - name: test-command
       - value: make test-prod
