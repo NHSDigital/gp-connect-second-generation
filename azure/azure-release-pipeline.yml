@@ -22,6 +22,7 @@ pool:
   name: 'AWS-ECS'
 
 variables:
+  - group: status-endpoint
   - template: project.yml
 
 extends:
