@@ -1,7 +1,7 @@
 variables:
-  service_name: {{ SERVICE_NAME }}
-  short_service_name: {{ SHORT_SERVICE_NAME }}
-  service_base_path: {{ SERVICE_BASE_PATH }}
+  service_name: gp-connect-second-generation
+  short_service_name: gcsg
+  service_base_path: gp-connect-second-generation
   test-variables: |
       PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
       SOURCE_COMMIT_ID=$(Build.SourceVersion) \
