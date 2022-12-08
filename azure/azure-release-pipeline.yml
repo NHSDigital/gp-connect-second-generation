@@ -60,9 +60,9 @@ extends:
         proxy_path: sandbox
         post_deploy:
           - template: ./templates/run-tests.yml
-                parameters:
-                  test-command: make test-prod
-                  smoketest-command: make smoketest-prod
+        parameters:
+          test-command: make test-prod
+          smoketest-command: make smoketest-prod
     # Enable int environment when ready by uncommenting:
       - environment: int
         depends_on:
