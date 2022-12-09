@@ -18,10 +18,9 @@ steps:
   - ${{ if parameters.full }}:
     # replace MY_APP_ID before running tests in prod
     - bash: |
-        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)" \
-        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)" \
-        export APIGEE_APP_ID="MY_APP_ID" \
-        export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)" \
+        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
+        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
+        export APIGEE_APP_ID="MY_APP_ID"
         ${{ parameters.test_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run full test suite
@@ -34,10 +33,9 @@ steps:
   - ${{ if not(parameters.full) }}:
     # replace MY_APP_ID before running tests in prod
     - bash: |
-        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)" \
-        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)" \
-        export APIGEE_APP_ID="MY_APP_ID" \
-        export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)" \
+        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
+        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
+        export APIGEE_APP_ID="MY_APP_ID"
         ${{ parameters.smoketest_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run smoketests
