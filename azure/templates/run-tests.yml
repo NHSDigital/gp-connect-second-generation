@@ -21,6 +21,7 @@ steps:
         export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
         export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
         export APIGEE_APP_ID="MY_APP_ID"
+        export STATUS_ENDPOINT_API_KEY="$(SERVICE_ENDPOINT_API_KEY)"
         ${{ parameters.test_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run full test suite
@@ -36,6 +37,7 @@ steps:
         export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)"
         export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
         export APIGEE_APP_ID="MY_APP_ID"
+        export STATUS_ENDPOINT_API_KEY="$(SERVICE_ENDPOINT_API_KEY)"
         ${{ parameters.smoketest_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run smoketests
