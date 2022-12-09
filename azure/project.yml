@@ -1,4 +1,8 @@
 variables:
-  service_name: gp-connect-second-generation
-  short_service_name: gcsg
-  service_base_path: gp-connect-second-generation
+  - group: status-endpoint
+  - name: service_name
+    value: gp-connect-second-generation
+  - name: short_service_name
+    value: gcsg
+  - name: service_base_path
+    value: gp-connect-second-generation
