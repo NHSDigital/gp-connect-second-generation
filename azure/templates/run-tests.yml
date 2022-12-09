@@ -22,6 +22,7 @@ steps:
         export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
         export APIGEE_APP_ID=1ea08527-8b04-487a-99c2-0258d99e7c4f
         export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)"
+        export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
         ${{ parameters.test_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run full test suite
@@ -38,6 +39,7 @@ steps:
         export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
         export APIGEE_APP_ID=1ea08527-8b04-487a-99c2-0258d99e7c4f
         export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)"
+        export SOURCE_COMMIT_ID="$(Build.SourceVersion)"
         ${{ parameters.smoketest_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run smoketests
