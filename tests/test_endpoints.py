@@ -27,7 +27,7 @@ def test_wait_for_ping(nhsd_apim_proxy_url):
         resp = requests.get(f"{nhsd_apim_proxy_url}/_ping")
         deployed_commitId = resp.json().get("commitId")
         retries += 1
-        logging.info(f"Expected commit id {getenv('SOURCE_COMMIT_ID')} but was {deployed_commitId}, retrying")
+        logging.warning(f"Expected commit id {getenv('SOURCE_COMMIT_ID')} but was {deployed_commitId}, retrying")
 
     if resp.status_code != 200:
         pytest.fail(f"Status code {resp.status_code}, expecting 200")
@@ -59,7 +59,7 @@ def test_wait_for_status(nhsd_apim_proxy_url, status_endpoint_auth_headers):
         resp = requests.get(f"{nhsd_apim_proxy_url}/_status", headers=status_endpoint_auth_headers)
         deployed_commitId = resp.json().get("commitId")
         retries += 1
-        logging.info(f"Expected commit id {getenv('SOURCE_COMMIT_ID')} but was {deployed_commitId}, retrying")
+        logging.warning(f"Expected commit id {getenv('SOURCE_COMMIT_ID')} but was {deployed_commitId}, retrying")
 
     if resp.status_code != 200:
         pytest.fail(f"Status code {resp.status_code}, expecting 200")
