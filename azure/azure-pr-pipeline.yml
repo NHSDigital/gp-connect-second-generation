@@ -42,3 +42,5 @@ extends:
       #   proxy_path: sandbox
       #   post_deploy:
       #     - template: ./templates/run-tests.yml
+      #       parameters:
+      #         full: true

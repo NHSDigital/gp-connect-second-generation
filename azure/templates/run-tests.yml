@@ -2,35 +2,12 @@ parameters:
   - name: full
     type: boolean
     default: false
-  - name: apigee-prod-org-tests
-    type: boolean
-    default: false
-variables:
-  - group: status-endpoint
-    {% raw %}${{ if parameters.apigee-prod-org-tests }}:{% endraw %}
-      # In order to run tests in prod you must supply the unique ID of an Apigee app
-      # that has authorized access to your service proxy.
-      - name: test-variables:
-      - value: |
-          PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
-          SOURCE_COMMIT_ID=$(Build.SourceVersion) \
-          APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-          APIGEE_APP_ID=1ea08527-8b04-487a-99c2-0258d99e7c4f \
-          STATUS_ENDPOINT_API_KEY=$(STATUS_ENDPOINT_API_KEY) \
-      - name: test-command
-      - value: make test-prod
-      - name: smoketest-command
-      - value: make smoketest-prod
-    {% raw %}- ${{ if not(parameters.apigee-prod-org-tests) }}:{% endraw %}
-      - name: test-variables:
-      - value: |
-          PROXY_NAME=$(FULLY_QUALIFIED_SERVICE_NAME) \
-          SOURCE_COMMIT_ID=$(Build.SourceVersion) \
-          APIGEE_ACCESS_TOKEN=$(secret.AccessToken) \
-      - name: test-command
-      - value: make test
-      - name: smoketest-command
-      - value: make smoketest
+  - name: test_command
+    type: string
+    default: 'make test'
+  - name: smoketest_command
+    type: string
+    default: 'make smoketest'
 
 steps:
   - bash: |
@@ -38,10 +15,14 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup pytests
     condition: always()
-  {% raw %}- ${{ if parameters.full }}:{% endraw %}
+  - ${{ if parameters.full }}:
+    # replace MY_APP_ID before running tests in prod
     - bash: |
-        $(test-variables)
-        $(test-command)
+        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)" \
+        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)" \
+        export APIGEE_APP_ID=MY_APP_ID \
+        export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)" \
+        ${{ parameters.test_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run full test suite
     - task: PublishTestResults@2
@@ -50,10 +31,14 @@ steps:
       inputs:
         testResultsFiles: '$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/test-report.xml'
         failTaskOnFailedTests: true
-  {% raw %}- ${{ if not(parameters.full) }}:{% endraw %}
+  - ${{ if not(parameters.full) }}:
+    # replace MY_APP_ID before running tests in prod
     - bash: |
-        $(test-variables)
-        $(smoketest-command)
+        export PROXY_NAME="$(FULLY_QUALIFIED_SERVICE_NAME)" \
+        export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)" \
+        export APIGEE_APP_ID=MY_APP_ID \
+        export STATUS_ENDPOINT_API_KEY="$(STATUS_ENDPOINT_API_KEY)" \
+        ${{ parameters.smoketest_command }}
       workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
       displayName: Run smoketests
     - task: PublishTestResults@2
